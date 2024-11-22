@@ -392,9 +392,7 @@ export function xmssVerifySig(hashFunction, wotsParams, msg, sigMsg, pk, h) {
   const hashKey = new Uint8Array(3 * n);
 
   const pubSeed = new Uint8Array(n);
-  for (let pubSeedIndex = 0, pkIndex = n; pubSeedIndex < pubSeed.length && pkIndex < n + n; pubSeedIndex++, pkIndex++) {
-    pubSeed.set([pk[pkIndex]], pubSeedIndex);
-  }
+  pubSeed.set(pk.subarray(n, n + n));
 
   // Init addresses
   const otsAddr = new Uint32Array(8);

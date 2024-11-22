@@ -174,13 +174,7 @@ export function lTree(hashFunction, params, leaf, wotsPK, pubSeed, addr) {
     if ((l & 1) === 1) {
       const destStartOffset = (l >>> 1) * n;
       const srcStartOffset = (l - 1) * n;
-      for (
-        let destIndex = destStartOffset, srcIndex = srcStartOffset;
-        destIndex < destStartOffset + n && srcIndex < srcStartOffset + n;
-        destIndex++, srcIndex++
-      ) {
-        wotsPK.set([wotsPK[srcIndex]], destIndex);
-      }
+      wotsPK.set(wotsPK.subarray(srcStartOffset, srcStartOffset + n), destStartOffset);
       l = (l >>> 1) + 1;
     } else {
       l >>>= 1;
