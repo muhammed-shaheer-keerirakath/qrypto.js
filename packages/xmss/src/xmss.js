@@ -146,21 +146,11 @@ export function xmssFastSignMessage(hashFunction, params, sk, bdsState, message)
   ]);
 
   const skSeed = new Uint8Array(n);
-  for (let skSeedIndex = 0, skIndex = 4; skSeedIndex < skSeed.length && skIndex < 4 + n; skSeedIndex++, skIndex++) {
-    skSeed.set([sk[skIndex]], skSeedIndex);
-  }
+  skSeed.set(sk.subarray(4, 4 + n));
   const skPRF = new Uint8Array(n);
-  for (let skPrfIndex = 0, skIndex = 4 + n; skPrfIndex < skPRF.length && skIndex < 4 + n + n; skPrfIndex++, skIndex++) {
-    skPRF.set([sk[skIndex]], skPrfIndex);
-  }
+  skPRF.set(sk.subarray(4 + n, 4 + n + n));
   const pubSeed = new Uint8Array(n);
-  for (
-    let pubSeedIndex = 0, skIndex = 4 + 2 * n;
-    pubSeedIndex < pubSeed.length && skIndex < 4 + 2 * n + n;
-    pubSeedIndex++, skIndex++
-  ) {
-    pubSeed.set([sk[skIndex]], pubSeedIndex);
-  }
+  pubSeed.set(sk.subarray(4 + 2 * n, 4 + 2 * n + n));
 
   const idxBytes32 = new Uint8Array(32);
   toByteLittleEndian(idxBytes32, idx, 32);
@@ -178,16 +168,8 @@ export function xmssFastSignMessage(hashFunction, params, sk, bdsState, message)
   const otsAddr = new Uint32Array(8);
 
   prf(hashFunction, R, idxBytes32, skPRF, n);
-  for (let hashKeyIndex = 0, rIndex = 0; hashKeyIndex < n && rIndex < R.length; hashKeyIndex++, rIndex++) {
-    hashKey.set([R[rIndex]], hashKeyIndex);
-  }
-  for (
-    let hashKeyIndex = n, skIndex = 4 + 3 * n;
-    hashKeyIndex < n + n && skIndex < 4 + 3 * n + n;
-    hashKeyIndex++, skIndex++
-  ) {
-    hashKey.set([sk[skIndex]], hashKeyIndex);
-  }
+  hashKey.set(R.subarray(0, R.length), 0);
+  hashKey.set(sk.subarray(4 + 3 * n, 4 + 3 * n + n), n);
   toByteLittleEndian(hashKey.subarray(2 * n, 2 * n + n), idx, n);
   const msgHash = new Uint8Array(n);
   const { error } = hMsg(hashFunction, msgHash, message, hashKey, n);
@@ -220,13 +202,7 @@ export function xmssFastSignMessage(hashFunction, params, sk, bdsState, message)
 
   sigMsgLen += params.wotsParams.keySize;
 
-  for (
-    let sigMsgIndex = sigMsgLen, authIndex = 0;
-    sigMsgIndex < sigMsgLen + params.h * params.n && authIndex < params.h * params.n;
-    sigMsgIndex++, authIndex++
-  ) {
-    sigMsg.set([bdsState.auth[authIndex]], sigMsgIndex);
-  }
+  sigMsg.set(bdsState.auth.subarray(0, params.h * params.n), sigMsgLen);
 
   if (idx < (new Uint32Array([1])[0] << params.h) - 1) {
     bdsRound(hashFunction, bdsState, idx, skSeed, params, pubSeed, otsAddr);
@@ -411,12 +387,8 @@ export function xmssVerifySig(hashFunction, wotsParams, msg, sigMsg, pk, h) {
     new Uint32Array([sigMsg[3]])[0];
 
   // Generate hash key (R || root || idx)
-  for (let hashKeyIndex = 0, sigMsgIndex = 4; hashKeyIndex < n && sigMsgIndex < 4 + n; hashKeyIndex++, sigMsgIndex++) {
-    hashKey.set([sigMsg[sigMsgIndex]], hashKeyIndex);
-  }
-  for (let hashKeyIndex = n, pkIndex = 0; hashKeyIndex < n + n && pkIndex < n; hashKeyIndex++, pkIndex++) {
-    hashKey.set([pk[pkIndex]], hashKeyIndex);
-  }
+  hashKey.set(sigMsg.subarray(4, 4 + n));
+  hashKey.set(pk.subarray(0, n), n);
   toByteLittleEndian(hashKey.subarray(2 * n, 2 * n + n), idx, n);
 
   sigMsgOffset += n + 4;
