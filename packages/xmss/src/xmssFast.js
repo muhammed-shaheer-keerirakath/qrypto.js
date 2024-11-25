@@ -266,13 +266,7 @@ export function bdsRound(hashFunction, bdsState, leafIdx, skSeed, params, pubSee
   if (((leafIdx >>> (tau + 1)) & 1) === 0 && tau < h - 1) {
     const destOffset = (tau >>> 1) * n;
     const srcOffset = tau * n;
-    for (
-      let keepIndex = destOffset, authIndex = srcOffset;
-      keepIndex < destOffset + n && authIndex < srcOffset + n;
-      keepIndex++, authIndex++
-    ) {
-      bdsState1.keep.set([bdsState1.auth[authIndex]], keepIndex);
-    }
+    bdsState1.keep.set(bdsState1.auth.subarray(srcOffset, srcOffset + n), destOffset);
   }
 
   if (tau === 0) {
