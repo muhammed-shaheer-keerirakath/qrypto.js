@@ -659,20 +659,12 @@ function bdsRound(hashFunction, bdsState, leafIdx, skSeed, params, pubSeed, addr
     hashH(hashFunction, bdsState1.auth.subarray(tau * n, tau * n + n), buf, pubSeed, nodeAddr, n);
     for (let i = 0; i < tau; i++) {
       if (i < h - k) {
-        for (let authIndex = i * n, nodeIndex = 0; authIndex < i * n + n && nodeIndex < n; authIndex++, nodeIndex++) {
-          bdsState1.auth.set([bdsState1.treeHash[i].node[nodeIndex]], authIndex);
-        }
+        bdsState1.auth.set(bdsState1.treeHash[i].node.subarray(), i * n);
       } else {
         const offset = (1 << (h - 1 - i)) + i - h;
         const rowIdx = ((leafIdx >>> i) - 1) >>> 1;
         const srcOffset = (offset + rowIdx) * n;
-        for (
-          let authIndex = i * n, retainIndex = srcOffset;
-          authIndex < i * n + n && retainIndex < srcOffset + n;
-          authIndex++, retainIndex++
-        ) {
-          bdsState1.auth.set([bdsState1.retain[retainIndex]], authIndex);
-        }
+        bdsState1.auth.set(bdsState1.retain.subarray(srcOffset, srcOffset + n), i * n);
       }
     }
 
