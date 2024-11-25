@@ -742,17 +742,9 @@ function treeHashUpdate(hashFunction, treeHash, bdsState, skSeed, params, pubSee
   genLeafWOTS(hashFunction, nodeBuffer, skSeed, params, pubSeed, lTreeAddr, otsAddr);
 
   while (treeHash1.stackUsage > 0 && bdsState1.stackLevels[bdsState1.stackOffset - 1] === nodeHeight) {
-    for (let i = n, j = 0; i < n + n && j < n; i++, j++) {
-      nodeBuffer.set([nodeBuffer[j]], i);
-    }
+    nodeBuffer.set(nodeBuffer.subarray(0, n), n);
     const srcOffset = (bdsState1.stackOffset - 1) * n;
-    for (
-      let nodeIndex = 0, stackIndex = srcOffset;
-      nodeIndex < n && stackIndex < srcOffset + n;
-      nodeIndex++, stackIndex++
-    ) {
-      nodeBuffer.set([bdsState1.stack[stackIndex]], nodeIndex);
-    }
+    nodeBuffer.set(bdsState1.stack.subarray(srcOffset, srcOffset + n));
     setTreeHeight(nodeAddr, nodeHeight);
     setTreeIndex(nodeAddr, treeHash1.nextIdx >>> (nodeHeight + 1));
     hashH(hashFunction, nodeBuffer.subarray(0, n), nodeBuffer, pubSeed, nodeAddr, n);
@@ -766,13 +758,7 @@ function treeHashUpdate(hashFunction, treeHash, bdsState, skSeed, params, pubSee
     treeHash1.completed = 1;
   } else {
     const destOffset = bdsState1.stackOffset * n;
-    for (
-      let stackIndex = destOffset, nodeIndex = 0;
-      stackIndex < destOffset + n && nodeIndex < n;
-      stackIndex++, nodeIndex++
-    ) {
-      bdsState1.stack.set([nodeBuffer[nodeIndex]], stackIndex);
-    }
+    bdsState1.stack.set(nodeBuffer.subarray(0, n), destOffset);
     treeHash1.stackUsage++;
     bdsState1.stackLevels.set([nodeHeight], bdsState1.stackOffset);
     bdsState1.stackOffset++;
