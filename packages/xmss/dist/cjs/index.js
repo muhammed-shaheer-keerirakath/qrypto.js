@@ -639,18 +639,10 @@ function bdsRound(hashFunction, bdsState, leafIdx, skSeed, params, pubSeed, addr
 
   if (tau > 0) {
     let srcOffset = (tau - 1) * n;
-    for (let bufIndex = 0, authIndex = srcOffset; bufIndex < n && authIndex < srcOffset + n; bufIndex++, authIndex++) {
-      buf.set([bdsState1.auth[authIndex]], bufIndex);
-    }
+    buf.set(bdsState1.auth.subarray(srcOffset, srcOffset + n));
 
     srcOffset = ((tau - 1) >>> 1) * n;
-    for (
-      let bufIndex = n, keepIndex = srcOffset;
-      bufIndex < 2 * n && keepIndex < srcOffset + n;
-      bufIndex++, keepIndex++
-    ) {
-      buf.set([bdsState1.keep[keepIndex]], bufIndex);
-    }
+    buf.set(bdsState1.keep.subarray(srcOffset, srcOffset + n), n);
   }
 
   if (((leafIdx >>> (tau + 1)) & 1) === 0 && tau < h - 1) {
