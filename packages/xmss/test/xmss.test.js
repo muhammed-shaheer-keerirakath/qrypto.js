@@ -586,12 +586,12 @@ describe('Test cases for [xmss]', () => {
       const leaf = getUInt8ArrayFromHex('7311d12fa38096f21c5ff3f1c6f32eea46a03abe1cdb49');
       const leafIdx = 3;
       const authPath = getUInt8ArrayFromHex('13d890ba01a01fd7a7fdb3589b99ac880c8c827cd6dfcb3c868f5c1e736bb4');
-      const n = 1;
+      const n = 32;
       const h = 3;
       const pubSeed = getUInt8ArrayFromHex('00dcdf1105de00a8696fe271dd0e93099a91c75d00ee');
       const addr = getUInt8ArrayFromHex('3133283e8558fa87');
       const expectedRoot = getUInt8ArrayFromHex(
-        '30fa463f638d84acd09c154bd9c3730e72d9680736eac038ebda6c204e062cb08a478f'
+        'fa01404c10796ab15d93b5bfbad26242e99c2bcc080671ca8620acaa51e55f1d8a478f'
       );
       const expectedLeaf = getUInt8ArrayFromHex('7311d12fa38096f21c5ff3f1c6f32eea46a03abe1cdb49');
       const expectedLeafIdx = 3;
