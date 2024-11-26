@@ -7,7 +7,7 @@ import { getUInt8ArrayFromHex } from './testUtility.js';
 describe('Test cases for [hash]', () => {
   describe('coreHash', () => {
     it('should generate coreHash output for the hashFunction SHA2_256', () => {
-      const outValue = getUInt8ArrayFromHex('04070802060902');
+      const outValue = getUInt8ArrayFromHex('0304050c0507220517101704050c2d07220517381704050c2d07220517380329');
       coreHash(
         HASH_FUNCTION.SHA2_256,
         outValue,
@@ -18,7 +18,7 @@ describe('Test cases for [hash]', () => {
         4,
         9
       );
-      const expectedOutValue = getUInt8ArrayFromHex('c2d660c43291b8');
+      const expectedOutValue = getUInt8ArrayFromHex('c2d660c43291b8ef1406b1bba683fef08ecfafbd34fa96509dc45478898d41d2');
 
       expect(outValue).to.deep.equal(expectedOutValue);
     });
@@ -60,7 +60,7 @@ describe('Test cases for [hash]', () => {
 
   describe('prf', () => {
     it('should generate prf output for the hashFunction SHA2_256', () => {
-      const outValue = getUInt8ArrayFromHex('08040901000100');
+      const outValue = getUInt8ArrayFromHex('0704050c2d07620517381704050c2d07220517381704050c2d07220517380301');
       prf(
         HASH_FUNCTION.SHA2_256,
         outValue,
@@ -68,7 +68,7 @@ describe('Test cases for [hash]', () => {
         getUInt8ArrayFromHex('060302'),
         2
       );
-      const expectedOutValue = getUInt8ArrayFromHex('459a2a76416196');
+      const expectedOutValue = getUInt8ArrayFromHex('459a2a76416196ebc2b1ddc219500518fc3dfcd69c9f6b8bb71adba6446b4880');
 
       expect(outValue).to.deep.equal(expectedOutValue);
     });
@@ -103,22 +103,22 @@ describe('Test cases for [hash]', () => {
   });
 
   describe('hashH', () => {
-    it('should generate prf output for the hashFunction SHA2_256', () => {
-      const outValue = getUInt8ArrayFromHex('08040901000100');
+    it('should generate hashH output for the hashFunction SHA2_256', () => {
+      const outValue = getUInt8ArrayFromHex('4704050c2d07620517381704050c2d07220517381704050c2d07220517380309');
       hashH(
         HASH_FUNCTION.SHA2_256,
         outValue,
         getUInt8ArrayFromHex('02040306'),
         getUInt8ArrayFromHex('08040302'),
         getUInt8ArrayFromHex('0307020702080703'),
-        getUInt8ArrayFromHex('02')[0]
+        getUInt8ArrayFromHex('20')[0]
       );
-      const expectedOutValue = getUInt8ArrayFromHex('fb3ee9683da3f0');
+      const expectedOutValue = getUInt8ArrayFromHex('134666d0ac117b0f51baffac3b340d1d32b66a15f1dba919b35d74038ff7a26e');
 
       expect(outValue).to.deep.equal(expectedOutValue);
     });
 
-    it('should generate prf output for the hashFunction SHAKE_128', () => {
+    it('should generate hashH output for the hashFunction SHAKE_128', () => {
       const outValue = getUInt8ArrayFromHex('08010003060809020608');
       hashH(
         HASH_FUNCTION.SHAKE_128,
@@ -133,7 +133,7 @@ describe('Test cases for [hash]', () => {
       expect(outValue).to.deep.equal(expectedOutValue);
     });
 
-    it('should generate prf output for the hashFunction SHAKE_256', () => {
+    it('should generate hashH output for the hashFunction SHAKE_256', () => {
       const outValue = getUInt8ArrayFromHex('0203050708090100');
       hashH(
         HASH_FUNCTION.SHAKE_256,

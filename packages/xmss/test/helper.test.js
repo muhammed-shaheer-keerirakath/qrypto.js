@@ -142,48 +142,47 @@ describe('Test cases for [helper]', () => {
   describe('sha256', () => {
     it('should return the SHA256 hash of type Uint8Array', () => {
       const message = new Uint8Array(48);
-      let out = new Uint8Array(18);
+      let out = getUInt8ArrayFromHex('1704050c2d07220517381704050c2d07220517381704050c2d07220517380304');
       out = sha256(out, message);
 
       expect(out).to.be.an.instanceOf(Uint8Array);
     });
 
-    it('should return the SHA256 hashed Uint8Array with message[23] and out[16]', () => {
+    it('should return the SHA256 hashed Uint8Array with message[23] and out[1704...]', () => {
       const message = new Uint8Array(23);
       message[13] = 17;
-      let out = new Uint8Array(16);
-      out[7] = 8;
-      out[11] = 6;
+      let out = getUInt8ArrayFromHex('1704050c2d07220517381704050c2d07220517381704050c2d07220517380304');
       out = sha256(out, message);
-      const expectedSha256Out = getUInt8ArrayFromHex('944e4d18b7add881cda9481934e8293e');
+      const expectedSha256Out = getUInt8ArrayFromHex(
+        '944e4d18b7add881cda9481934e8293e88ea26c961af9e9f8a673e8442b66eac'
+      );
 
       expect(out).to.deep.equal(expectedSha256Out);
     });
 
-    it('should return the SHA256 hashed Uint8Array with message[30] and out[30]', () => {
+    it('should return the SHA256 hashed Uint8Array with message[30] and out[2704...]', () => {
       const message = new Uint8Array(30);
       message[1] = 8;
       message[8] = 1;
-      let out = new Uint8Array(30);
-      out[29] = 32;
-      out[8] = 4;
+      let out = getUInt8ArrayFromHex('2704050c2e07220517381704050c2d07220517381704050c2d07220517380301');
       out = sha256(out, message);
-      const expectedSha256Out = getUInt8ArrayFromHex('59556489c4bdc542c319eb123673493abec0d4cd25476cb64c06d161a47f');
+      const expectedSha256Out = getUInt8ArrayFromHex(
+        '59556489c4bdc542c319eb123673493abec0d4cd25476cb64c06d161a47f5871'
+      );
 
       expect(out).to.deep.equal(expectedSha256Out);
     });
 
-    it('should return the SHA256 hashed Uint8Array with message[4] and out[18]', () => {
+    it('should return the SHA256 hashed Uint8Array with message[4] and out[3704...]', () => {
       const message = new Uint8Array(4);
       message[1] = 6;
       message[2] = 4;
       message[3] = 2;
-      let out = new Uint8Array(18);
-      out[16] = 3;
-      out[8] = 17;
-      out[4] = 13;
+      let out = getUInt8ArrayFromHex('3704050c2e07220517381704050c2d04220517381704050c2d07220517380305');
       out = sha256(out, message);
-      const expectedSha256Out = getUInt8ArrayFromHex('26ee19ac2a2627552adad15327fe052c0360');
+      const expectedSha256Out = getUInt8ArrayFromHex(
+        '26ee19ac2a2627552adad15327fe052c0360386156ba7fdf8f080cb5a64eb179'
+      );
 
       expect(out).to.deep.equal(expectedSha256Out);
     });
