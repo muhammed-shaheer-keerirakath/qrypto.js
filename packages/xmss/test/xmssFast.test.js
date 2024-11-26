@@ -19,7 +19,7 @@ import { getUInt32ArrayFromHex, getUInt8ArrayFromHex } from './testUtility.js';
 describe('Test cases for [xmssFast]', () => {
   describe('getSeed', () => {
     it('should update the seed variable with hashFunction SHA2_256', () => {
-      const seed = getUInt8ArrayFromHex('0203050704090100');
+      const seed = getUInt8ArrayFromHex('1704050c2d07220517381704050c2d07220517381704050c2d07220517380304');
       getSeed(
         HASH_FUNCTION.SHA2_256,
         seed,
@@ -27,7 +27,7 @@ describe('Test cases for [xmssFast]', () => {
         1,
         getUInt8ArrayFromHex('0300000000000208')
       );
-      const expectedSeed = getUInt8ArrayFromHex('dcf95c61e21dd076');
+      const expectedSeed = getUInt8ArrayFromHex('dcf95c61e21dd076674d91fd9bacd3ea0021b0bd8c09b09fd74f7cd8f3974dd6');
 
       expect(seed).to.deep.equal(expectedSeed);
     });

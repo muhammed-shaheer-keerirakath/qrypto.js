@@ -146,9 +146,7 @@ function shake256(out, msg) {
  */
 function sha256(out, msg) {
   const hashOut = sha256$1.sha256(msg);
-  for (let i = 0, h = 0; i < out.length && h < hashOut.length; i++, h++) {
-    out.set([hashOut[h]], i);
-  }
+  out.set(hashOut.subarray());
   return out;
 }
 
